@@ -5,6 +5,8 @@ Pacman l0dable for the r0ket - This is my first work in C, so don't expect too m
 
 More to come soon™
 
+![Startscreen](https://raw.github.com/ManiacTwister/r0kman/master/r0kman.gif)
+
 TODO
 ======
 *  Optimize(!)
