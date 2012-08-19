@@ -184,8 +184,8 @@ void ram(void) {
     checkForPoint();
     renderGhosts();
     checkForGhost();
-    spawnFruit();
-    renderFruit();
+    //spawnFruit();
+    //renderFruit();
     drawMeta();
     lcdRefresh();
 
