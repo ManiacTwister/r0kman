@@ -21,17 +21,17 @@
  * 
  */
 
-#include <sysinit.h>
-#include <stdio.h>
+//#include <sysinit.h>
+//#include <stdio.h>
 
 #include "basic/basic.h"
-#include "basic/config.h"
+//#include "basic/config.h"
 
 #include "lcd/render.h"
 #include "lcd/display.h"
 #include "lcd/allfonts.h"
-#include "filesystem/ff.h"
-#include "filesystem/diskio.h"
+//#include "filesystem/ff.h"
+//#include "filesystem/diskio.h"
 
 #include "usetable.h"
 
@@ -50,40 +50,48 @@ uint8_t levels[1][10][16] = {
   }
 };
 
-uint8_t tiles[32][6] = {
-  { 0, 7, 8, 16, 17, 18 },
-  { 18, 17, 16, 8, 7, 0 },
-  { 0, 56, 4, 2, 34, 18 },
-  { 18, 34, 2, 4, 56, 0 },
-  { 0, 63, 0, 0, 63, 0 },
-  { 18, 18, 18, 18, 18, 18 },
-  { 0, 63, 0, 0, 33, 18 },
-  { 18, 33, 0, 0, 63, 0 },
-  { 0, 12, 18, 18, 18, 18 },
-  { 18, 18, 18, 18, 12, 0 },
-  { 0, 60, 2, 2, 60, 0 },
-  { 0, 15, 16, 16, 15, 0 },
-  { 0, 0, 12, 12, 0, 0 },
-  { 0, 12, 30, 30, 12, 0 },  
-  { 12, 30, 15, 15, 30, 12 },
-  { 28, 14, 7, 7, 14, 28 },
-  { 0, 18, 63, 63, 30, 12 },
-  { 0, 33, 51, 63, 30, 12 },
-  { 12, 30, 60, 60, 30, 12 },
-  { 14, 30, 56, 56, 28, 14 },
-  { 12, 30, 63, 63, 18, 0 },
-  { 12, 30, 63, 51, 33, 0 },
-  { 12, 30, 63, 63, 30, 12 },
-  { 0, 0, 33, 63, 30, 12 },
-  { 0, 0, 0, 33, 30, 12 }, 
-  { 0, 0, 0, 0, 30, 12 },
-  { 0, 0, 0, 0, 12, 12 },
-  { 0, 17, 10, 0, 10, 17 },
-  { 12, 30, 43, 63, 63, 42 },
-  { 12, 30, 53, 63, 63, 21 },
-  { 0, 0, 63, 0, 0, 0 },
-  { 0, 0, 0, 0, 0, 0 }
+uint8_t tiles[32][6] = { // maybe possible to store in ROM(?) (Tile description in german!)
+  { 0, 7, 8, 16, 17, 18 }, // Ecke oben links
+  { 18, 17, 16, 8, 7, 0 }, // Ecke unten links
+  { 0, 56, 4, 2, 34, 18 }, // Ecke oben rechts
+  { 18, 34, 2, 4, 56, 0 }, // Eche unten rechts
+  { 0, 63, 0, 0, 63, 0 }, // Wand Horizontal
+  { 18, 18, 18, 18, 18, 18 }, // Wand vertikal
+  { 0, 63, 0, 0, 33, 18 }, // Eckverbindung unten
+  { 18, 33, 0, 0, 63, 0 }, // Eckverbindung oben
+  { 0, 12, 18, 18, 18, 18 }, // Wandabschluss oben
+  { 18, 18, 18, 18, 12, 0 }, // Wandabschluss unten
+  { 0, 60, 2, 2, 60, 0 }, //Wandabschluss rechts
+  { 0, 15, 16, 16, 15, 0 }, // Wandabschluss links
+  { 0, 0, 12, 12, 0, 0 }, // Futter
+  { 0, 12, 30, 30, 12, 0 },  // Futterbonus (geist fangbar)
+  { 12, 30, 15, 15, 30, 12 }, // Pacframe links 1
+  { 28, 14, 7, 7, 14, 28 }, // Pacframe links 2
+  { 0, 18, 63, 63, 30, 12 }, // Pacframe oben 1
+  { 0, 33, 51, 63, 30, 12 }, // Pacframe oben 2
+  { 12, 30, 60, 60, 30, 12 }, // Pacframe rechts 1
+  { 14, 30, 56, 56, 28, 14 }, // Pacframe rechts 2
+  { 12, 30, 63, 63, 18, 0 }, // Pacframe unten 1
+  { 12, 30, 63, 51, 33, 0 }, // Pacframe unten 2
+  { 12, 30, 63, 63, 30, 12 }, // Pacframe 3 
+  { 0, 0, 33, 63, 30, 12 }, // Pacdeathanimation 1 
+  { 0, 0, 0, 33, 30, 12 }, // Pacdeathanimation 2
+  { 0, 0, 0, 0, 30, 12 }, // Pacdeathanimation 3
+  { 0, 0, 0, 0, 12, 12 }, // Pacdeathanimation 4
+  { 0, 17, 10, 0, 10, 17 }, // Pacdeathanimation 5
+  { 12, 30, 43, 63, 63, 42 }, // Geist links
+  { 12, 30, 53, 63, 63, 21 }, // Geist rechts
+  { 0, 0, 63, 0, 0, 0 }, // Geistspawntür
+  { 0, 0, 0, 0, 0, 0 }, // Leeres feld
+  /*{ 0, 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0, 0 }*/
 };
+                  // fruit, timer
+uint16_t fruit[2] = {0, 0};
 
 int fqz=50;
 uint8_t dir=0;
@@ -105,7 +113,7 @@ uint8_t ghosts[4][9] = {
 }; 
 
 bool color;
-bool finished=false;
+bool died=false;
 bool isStart=true;
 bool run = true;
 
@@ -124,20 +132,20 @@ bool pointsLeft(void);
 void setStartscreenValues(void);
 void startScreen(void); 
 void makeStep(int);
-void drawEndscreen(void);
+int showEndscreen(void);
 void metaText(void);
+void pacSpawn(void);
+void renderFruit(void);
+void spawnFruit(void);
 
+// ~390 bytes
 void ram(void) {
   /* Color? */
-  /*if(lcdRead(220)==14) {
+  if(/*lcdRead(220)==14*/false) {
     color=true;
+    // TODO : Make it colorized
   } else {
     color=false;
-  }*/
-    color=false;
-        
-  if(color) {
-    return;
   }
 
   #ifdef SIMULATOR
@@ -150,53 +158,49 @@ void ram(void) {
   resetValues();
   while(run) {
     uint8_t key = getInputRaw();
-    if(!finished) {
-      switch(key) {
-        case BTN_LEFT:
-          if(canStep(pacX-1, pacY, 5) && pacDY == 0)
-            dir = 0;
-          break;
-        case BTN_UP:
-          if(canStep(pacX, pacY-1, 5) && pacDX == 0)
-            dir = 1;
-          break;
-        case BTN_RIGHT:
-          if(canStep(pacX+1, pacY, 5) && pacDY == 0)
-            dir = 2;
-          break;
-        case BTN_DOWN:
-          if(canStep(pacX, pacY+1, 5) && pacDX == 0)
-            dir = 3;
-          break;
-        case BTN_ENTER:
-          run = false;
-      }
-      
-      renderLevel();
-      renderPacman();
-      checkForPoint();
-      renderGhosts();
-      checkForGhost();
-      drawMeta();
-
-      if(!pointsLeft()) { 
-        finished = true;
-      }
-    } else {
-      if (key==BTN_DOWN) {
-        run=false;
-      }
-      lcdClear();
-      drawEndscreen();
+    switch(key) {
+      case BTN_LEFT:
+        if(canStep(pacX-1, pacY, 5) && pacDY == 0)
+          dir = 0;
+        break;
+      case BTN_UP:
+        if(canStep(pacX, pacY-1, 5) && pacDX == 0)
+          dir = 1;
+        break;
+      case BTN_RIGHT:
+        if(canStep(pacX+1, pacY, 5) && pacDY == 0)
+          dir = 2;
+        break;
+      case BTN_DOWN:
+        if(canStep(pacX, pacY+1, 5) && pacDX == 0)
+          dir = 3;
+        break;
+      case BTN_ENTER:
+        run = false;
     }
+    lcdClear();
+    renderLevel();
+    renderPacman();
+    checkForPoint();
+    renderGhosts();
+    checkForGhost();
+    spawnFruit();
+    renderFruit();
+    drawMeta();
     lcdRefresh();
+
+    if(!pointsLeft() || died) { 
+      if(showEndscreen()) {
+       run=false;
+      }
+    }
+
     delayms(fqz);
   }
   return;
 }
 
 void renderLevel() {
-  lcdClear();
   for (uint8_t y=0; y < 10; y++) {
     for(uint8_t x=0; x < 16; x++) {
       drawTile(levels[0][y][x], x, y);
@@ -221,37 +225,10 @@ void renderPacman() {
   pacFrame += pacFramed;
 }
 
-bool canStep(uint8_t x, uint8_t y, int g) {
-  return (levels[0][y][x]==31 || levels[0][y][x]==12 || levels[0][y][x]==13 || (g < 5 && ghosts[g][6]==1 && levels[0][y][x]==30));
-}
-
-void checkForPoint() {
-  if(levels[0][pacY][pacX]==12) {
-    points += 10;
-    levels[0][pacY][pacX]=31;
-  } else if(levels[0][pacY][pacX]==13) {
-    points += 50;
-    levels[0][pacY][pacX]=31;
-    for(int g=0; g<4; g++) {
-      //ghosts[g][4]=1; //state 1 = catchable
-    }
-  }
-}
-
-void checkForGhost() {
-  for(int g=0; g<4; g++) {
-    if(ghosts[g][0]==pacX && ghosts[g][1]==pacY && ghosts[g][4]==0) {
-      lives--;
-      if(lives>0) {
-        pacX = 7;
-        pacY = 5;
-        pacDX = 3;
-        pacDY = 0;
-        dir=0;
-      } else {
-        finished=true;
-      }
-    }
+void renderFruit() {
+  if(fruit[1]>0) {
+    drawTile(fruit[0], 7, 5);
+      fruit[1]--;
   }
 }
 
@@ -284,6 +261,37 @@ void renderGhosts() {
   }
 }
 
+bool canStep(uint8_t x, uint8_t y, int g) {
+  return (levels[0][y][x]==31 || levels[0][y][x]==12 || levels[0][y][x]==13 || (g < 5 && ghosts[g][6]==1 && levels[0][y][x]==30));
+}
+
+void checkForPoint() {
+  if(levels[0][pacY][pacX]==12) {
+    points += 10;
+    levels[0][pacY][pacX]=31;
+  } else if(levels[0][pacY][pacX]==13) {
+    points += 50;
+    levels[0][pacY][pacX]=31;
+    for(int g=0; g<4; g++) {
+      //ghosts[g][4]=1; //state 1 = catchable
+    }
+  }
+}
+
+void checkForGhost() {
+  for(int g=0; g<4; g++) {
+    if(ghosts[g][0]==pacX && ghosts[g][1]==pacY && ghosts[g][4]==0) {
+      lives--;
+      if(lives>0) {
+        pacSpawn();
+      } else {
+        died=true;
+      }
+    }
+  }
+}
+
+// ~340bytes
 void makeStep(int pac) {
   uint8_t s_dir;
   uint8_t s_x;
@@ -306,7 +314,7 @@ void makeStep(int pac) {
   }
   
   switch (s_dir) {
-    // If necessary, optimize ;)
+    // If necessary, optimize ;) <<--- !! is necessary!!
     case 0:
       if(canStep(s_x - (6 - s_dx) / 6, s_y, pac) || isStart) {
         if(s_dx == 0) {
@@ -390,6 +398,14 @@ void drawMeta() {
   }
 }
 
+void metaText() {
+  DoString(0, 2,"  r0kman by  ");
+  DoString(0, 10,"ManiacTwister");
+  
+  if(isStart) DoString(0, 40,"Up:Insert coin");
+  DoString(0,48, "  Down: Exit  "); 
+}
+
 bool pointsLeft() {
   for (uint8_t y=0; y < 10; y++) {
     for(uint8_t x=0; x < 16; x++) {
@@ -401,18 +417,24 @@ bool pointsLeft() {
   return false;
 }
 
-void drawEndscreen() {
-  metaText();
-  DoInt(33, 34, points);
-  DoString(0,25, "   Score:");
+/**
+* Set spawn values
+**/
+void pacSpawn() {
+  pacX = 7;
+  pacY = 5;
+  pacDX = 3;
+  pacDY = 0;
+  dir=0;
+  pacFrame = 0;
+  pacFramed = 1;
 }
 
-void metaText() {
-  DoString(0, 2,"  r0kman by  ");
-  DoString(0, 10,"ManiacTwister");
-  
-  if(isStart) DoString(0, 40,"Up:Insert coin");
-  DoString(0,48, "  Down: Exit  "); 
+void spawnFruit() {
+  if ((getRandom()%1024)==0) {
+    fruit[0] = (getRandom()%(34-37)+34);
+    fruit[1] = 200;
+  }
 }
 
 /*
@@ -459,30 +481,28 @@ void startScreen() {
   resetValues();
 }
 
+int showEndscreen() {
+  lcdClear();
+  metaText();
+  DoInt(33, 34, points);
+  DoString(0,25, "   Score:");
+  lcdRefresh();
+  while(1) {
+    if(getInputRaw()==BTN_DOWN) return 1;
+  }
+}
+
 void setStartscreenValues() {
   pacX = 11;
   pacY = 5;
   dir=0;
-  ghosts[0][0] = 13;
-  ghosts[1][0] = 14;
-  ghosts[2][0] = 15;
-  ghosts[3][0] = 16;
-  ghosts[0][1] = 5;
-  ghosts[1][1] = 5;
-  ghosts[2][1] = 5;
-  ghosts[3][1] = 5;
-  ghosts[0][2] = 3;
-  ghosts[1][2] = 3;
-  ghosts[2][2] = 3;
-  ghosts[3][2] = 3;
-  ghosts[0][3] = 0;
-  ghosts[1][3] = 0;
-  ghosts[2][3] = 0;
-  ghosts[3][3] = 0;
-  ghosts[0][6]=0;
-  ghosts[1][6]=0;
-  ghosts[2][6]=0;
-  ghosts[3][6]=0;
+  for(int g=0; g<4; g++) {
+    ghosts[g][0] = 13+g;
+    ghosts[g][1] = 5;
+    ghosts[g][2] = 3;
+    ghosts[g][3] = 0;
+    ghosts[g][6] = 0;
+  }
 }
 
 void resetValues() {
@@ -504,36 +524,18 @@ void resetValues() {
   memcpy(levels,tmplevels,sizeof(tmplevels));*/
 
   memset(ghosts, 0, sizeof(ghosts[0][0]) * 4 * 9);
-  ghosts[0][0] = 7;
-  ghosts[1][0] = 7;
-  ghosts[2][0] = 8;
-  ghosts[3][0] = 8;
 
-  ghosts[0][1] = 3;
-  ghosts[1][1] = 1;
-  ghosts[2][1] = 3;
-  ghosts[3][1] = 1;
+  for(int g=0; g<4; g++) {
+    ghosts[g][1] = (g%2==0?3:1);
+    ghosts[g][0] = g > 1 ? 8 : 7;
+    ghosts[g][7] = 7;
+    ghosts[g][8] = 5;
+  }
 
-  ghosts[0][7] = 7;
-  ghosts[1][7] = 7;
-  ghosts[2][7] = 7;
-  ghosts[3][7] = 7;
-
-  ghosts[0][8] = 5;
-  ghosts[1][8] = 5;
-  ghosts[2][8] = 5;
-  ghosts[3][8] = 5;
-
-  dir=0;
-  pacX = 7;
-  pacY = 5;
-  pacDX = 3;
-  pacDY = 0;
+  pacSpawn();
   points = 0;
-  pacFrame = 0;
-  pacFramed = 1;
   lives = 3;
 
-  finished=false;
+  died=false;
   isStart=false;
 }

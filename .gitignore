@@ -10,3 +10,10 @@
 *.lai
 *.la
 *.a
+
+#dirs
+old/
+editor/
+levels/
+res/
+.gitignore
